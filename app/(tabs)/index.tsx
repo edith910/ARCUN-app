@@ -1,29 +1,31 @@
+// src/screens/HomeScreen.tsx
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { RootStackParamList } from '../App';
 
 const bitacoras = [
-  'Mortalidad y control de fauna.',
-  'Montas.',
-  'Productos cárnicos.',
-  'Salida de alimento.',
-  'Peso de canales.',
-  'Destete y salida de engorda.',
-  'Carpeta de registros No.1 Hembras y machos reproductores.',
-  'Carpeta de registros No.2 Tratamientos y actas de necropsia.',
-  'Almacen - Cocina',
+  { title: 'Mortalidad y control de fauna.', screen: 'Mortalidad' },
+  { title: 'Montas.', screen: 'Montas' },
+  { title: 'Productos cárnicos.', screen: 'ProductosC' },
+  { title: 'Salida de alimento.', screen: 'Alimento' },
+  { title: 'Peso de canales.', screen: 'Peso' },
+  { title: 'Destete y salida de engorda.', screen: 'Engorda' },
+  { title: 'Carpeta de registros No.1 Hembras y machos reproductores.', screen: 'Registro1' },
+  { title: 'Carpeta de registros No.2 Tratamientos y actas de necropsia.', screen: 'Registro2' },
+  { title: 'Almacen - Cocina', screen: 'Almacen' },
 ];
 
 export default function HomeScreen() {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
     <View style={styles.container}>
-      {/* Header fijo */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Bitácoras</Text>
       </View>
 
-      {/* Imagen y logo estáticos */}
       <View style={styles.staticHeader}>
         <Image
           source={require('../(tabs)/img/arcun.png')}
@@ -32,9 +34,8 @@ export default function HomeScreen() {
         />
       </View>
 
-      {/* Scroll solo para las bitácoras */}
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        {bitacoras.map((texto, index) => (
+        {bitacoras.map(({ title, screen }, index) => (
           <Pressable
             key={index}
             style={({ pressed }) => [
@@ -42,11 +43,9 @@ export default function HomeScreen() {
               pressed && styles.buttonPressed,
               index === bitacoras.length - 1 && styles.fullWidthButton,
             ]}
-            onPress={() => {
-              console.log('Presionaste:', texto);
-            }}
+            onPress={() => navigation.navigate(screen)}
           >
-            <Text style={styles.buttonText}>{texto}</Text>
+            <Text style={styles.buttonText}>{title}</Text>
           </Pressable>
         ))}
       </ScrollView>
@@ -55,9 +54,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   header: {
     height: 70,
     backgroundColor: '#51bd3eff',
@@ -76,14 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
   },
-  headerImage: {
-    width: 280,
-    height: 150,
-  },
-  arcunText: {
-    color: '#32ab51',
-    marginTop: 8,
-  },
+  headerImage: { width: 280, height: 150 },
   contentContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -102,12 +92,8 @@ const styles = StyleSheet.create({
     borderColor: '#3B5998',
     justifyContent: 'center',
   },
-  fullWidthButton: {
-    width: '100%',
-  },
-  buttonPressed: {
-    backgroundColor: '#d0e1fc',
-  },
+  fullWidthButton: { width: '100%' },
+  buttonPressed: { backgroundColor: '#d0e1fc' },
   buttonText: {
     color: '#3B5998',
     fontSize: 16,
