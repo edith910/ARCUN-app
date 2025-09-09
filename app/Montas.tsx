@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { Alert, Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-export default function Mortalidad() {
+export default function Montas() {
   // Estado único para todo el formulario
   const [form, setForm] = useState({
-    fecha: '',
-    areaProductiva: '',
-    jaulaID: '',
-    muertos: '',
-    signologia: '',
-    lesionesNecropsia: '',
-    dxPresuntivo: '',
-    rip: '',
-    eut: '',
+    lote: '',
+    fechaMonta: '',
+    noHembra: '',
+    noMacho: '',
+    noMonta: '',
+    noGazaposVivos: '',
+    noGazaposMuertos: '',
     observaciones: '',
   });
 
@@ -31,97 +29,79 @@ export default function Mortalidad() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.title}>Formulario Mortalidad</Text>
+      <Text style={styles.title}>Formulario Montas</Text>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Fecha</Text>
+        <Text style={styles.label}>Lote</Text>
         <TextInput
-          value={form.fecha}
-          onChangeText={v => handleChange('fecha', v)}
+          value={form.lote}
+          onChangeText={v => handleChange('lote', v)}
+          placeholder="Lote"
+          style={styles.input}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Fecha de monta</Text>
+        <TextInput
+          value={form.fechaMonta}
+          onChangeText={v => handleChange('fechaMonta', v)}
           placeholder="YYYY-MM-DD"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Área productiva</Text>
+        <Text style={styles.label}>No. Hembra</Text>
         <TextInput
-          value={form.areaProductiva}
-          onChangeText={v => handleChange('areaProductiva', v)}
-          placeholder="Área productiva"
-          style={styles.input}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Jaula o ID</Text>
-        <TextInput
-          value={form.jaulaID}
-          onChangeText={v => handleChange('jaulaID', v)}
-          placeholder="Jaula o ID"
-          style={styles.input}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Muertos</Text>
-        <TextInput
-          value={form.muertos}
-          onChangeText={v => handleChange('muertos', v)}
-          placeholder="Número"
+          value={form.noHembra}
+          onChangeText={v => handleChange('noHembra', v)}
+          placeholder="Número de hembra"
           keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Signología (síntomas)</Text>
+        <Text style={styles.label}>No. Macho</Text>
         <TextInput
-          value={form.signologia}
-          onChangeText={v => handleChange('signologia', v)}
-          placeholder="Signología"
-          multiline
+          value={form.noMacho}
+          onChangeText={v => handleChange('noMacho', v)}
+          placeholder="Número de macho"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Lesiones necropsia</Text>
+        <Text style={styles.label}>No. Monta</Text>
         <TextInput
-          value={form.lesionesNecropsia}
-          onChangeText={v => handleChange('lesionesNecropsia', v)}
-          placeholder="Lesiones necropsia"
-          multiline
+          value={form.noMonta}
+          onChangeText={v => handleChange('noMonta', v)}
+          placeholder="Número de monta"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Dx presuntivo</Text>
+        <Text style={styles.label}>No. Gazapos Vivos (V)</Text>
         <TextInput
-          value={form.dxPresuntivo}
-          onChangeText={v => handleChange('dxPresuntivo', v)}
-          placeholder="Dx presuntivo"
+          value={form.noGazaposVivos}
+          onChangeText={v => handleChange('noGazaposVivos', v)}
+          placeholder="Número de gazapos vivos"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>RIP</Text>
+        <Text style={styles.label}>No. Gazapos Muertos (M)</Text>
         <TextInput
-          value={form.rip}
-          onChangeText={v => handleChange('rip', v)}
-          placeholder="RIP"
-          style={styles.input}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>EUT</Text>
-        <TextInput
-          value={form.eut}
-          onChangeText={v => handleChange('eut', v)}
-          placeholder="EUT"
+          value={form.noGazaposMuertos}
+          onChangeText={v => handleChange('noGazaposMuertos', v)}
+          placeholder="Número de gazapos muertos"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
@@ -132,8 +112,8 @@ export default function Mortalidad() {
           value={form.observaciones}
           onChangeText={v => handleChange('observaciones', v)}
           placeholder="Observaciones"
-          multiline
           style={styles.input}
+          multiline
         />
       </View>
 

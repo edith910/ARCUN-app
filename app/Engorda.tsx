@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { Alert, Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-export default function Mortalidad() {
-  // Estado único para todo el formulario
+
+export default function Engorda() {
   const [form, setForm] = useState({
-    fecha: '',
-    areaProductiva: '',
-    jaulaID: '',
-    muertos: '',
-    signologia: '',
-    lesionesNecropsia: '',
-    dxPresuntivo: '',
-    rip: '',
-    eut: '',
+    lote: '',
+    fechaDestete: '',
+    padres: '',
+    numero1: '',
+    peso1: '',
+    jaula: '',
+    fechaSalida: '',
+    numero2: '',
+    peso2: '',
     observaciones: '',
   });
 
-  // Función para actualizar cada campo
   const handleChange = (name: string, value: string) => {
     setForm(prevForm => ({
       ...prevForm,
@@ -24,50 +23,56 @@ export default function Mortalidad() {
     }));
   };
 
-  // Función que valida/manda los datos
   const confirmarDatos = () => {
-    Alert.alert('Datos ingresados', JSON.stringify(form, null, 2));
+    Alert.alert(
+      'Datos ingresados',
+      `Lote: ${form.lote}\nFecha destete: ${form.fechaDestete}\nPadres: ${form.padres}\nNo. 1: ${form.numero1}\nPeso 1: ${form.peso1}\nJaula: ${form.jaula}\nFecha de salida: ${form.fechaSalida}\nNo. 2: ${form.numero2}\nPeso 2: ${form.peso2}\nObservaciones: ${form.observaciones}`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Confirmar', onPress: () => Alert.alert('Datos confirmados') },
+      ]
+    );
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.title}>Formulario Mortalidad</Text>
+      <Text style={styles.title}>Formulario Destete</Text>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Fecha</Text>
+        <Text style={styles.label}>Lote</Text>
         <TextInput
-          value={form.fecha}
-          onChangeText={v => handleChange('fecha', v)}
+          value={form.lote}
+          onChangeText={v => handleChange('lote', v)}
+          placeholder="Lote"
+          style={styles.input}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Fecha destete</Text>
+        <TextInput
+          value={form.fechaDestete}
+          onChangeText={v => handleChange('fechaDestete', v)}
           placeholder="YYYY-MM-DD"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Área productiva</Text>
+        <Text style={styles.label}>Padres</Text>
         <TextInput
-          value={form.areaProductiva}
-          onChangeText={v => handleChange('areaProductiva', v)}
-          placeholder="Área productiva"
+          value={form.padres}
+          onChangeText={v => handleChange('padres', v)}
+          placeholder="Padres"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Jaula o ID</Text>
+        <Text style={styles.label}>No. 1</Text>
         <TextInput
-          value={form.jaulaID}
-          onChangeText={v => handleChange('jaulaID', v)}
-          placeholder="Jaula o ID"
-          style={styles.input}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Muertos</Text>
-        <TextInput
-          value={form.muertos}
-          onChangeText={v => handleChange('muertos', v)}
+          value={form.numero1}
+          onChangeText={v => handleChange('numero1', v)}
           placeholder="Número"
           keyboardType="numeric"
           style={styles.input}
@@ -75,53 +80,54 @@ export default function Mortalidad() {
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Signología (síntomas)</Text>
+        <Text style={styles.label}>Peso 1</Text>
         <TextInput
-          value={form.signologia}
-          onChangeText={v => handleChange('signologia', v)}
-          placeholder="Signología"
-          multiline
+          value={form.peso1}
+          onChangeText={v => handleChange('peso1', v)}
+          placeholder="Peso"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Lesiones necropsia</Text>
+        <Text style={styles.label}>Jaula</Text>
         <TextInput
-          value={form.lesionesNecropsia}
-          onChangeText={v => handleChange('lesionesNecropsia', v)}
-          placeholder="Lesiones necropsia"
-          multiline
+          value={form.jaula}
+          onChangeText={v => handleChange('jaula', v)}
+          placeholder="Jaula"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Dx presuntivo</Text>
+        <Text style={styles.label}>Fecha de salida</Text>
         <TextInput
-          value={form.dxPresuntivo}
-          onChangeText={v => handleChange('dxPresuntivo', v)}
-          placeholder="Dx presuntivo"
+          value={form.fechaSalida}
+          onChangeText={v => handleChange('fechaSalida', v)}
+          placeholder="YYYY-MM-DD"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>RIP</Text>
+        <Text style={styles.label}>No. 2</Text>
         <TextInput
-          value={form.rip}
-          onChangeText={v => handleChange('rip', v)}
-          placeholder="RIP"
+          value={form.numero2}
+          onChangeText={v => handleChange('numero2', v)}
+          placeholder="Número"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>EUT</Text>
+        <Text style={styles.label}>Peso 2</Text>
         <TextInput
-          value={form.eut}
-          onChangeText={v => handleChange('eut', v)}
-          placeholder="EUT"
+          value={form.peso2}
+          onChangeText={v => handleChange('peso2', v)}
+          placeholder="Peso"
+          keyboardType="numeric"
           style={styles.input}
         />
       </View>
@@ -138,7 +144,7 @@ export default function Mortalidad() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Confirmar datos" onPress={confirmarDatos} color="#4a90e2" />
+        <Button title="Verificar y confirmar" onPress={confirmarDatos} color="#4a90e2" />
       </View>
     </ScrollView>
   );
