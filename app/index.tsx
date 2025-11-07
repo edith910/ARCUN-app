@@ -1,7 +1,6 @@
 // app/index.tsx (or (tabs)/index.tsx if using Expo Router groups)
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from './App'; // Or './App.tsx' if TypeScript requires the extension
 
