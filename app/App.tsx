@@ -1,11 +1,25 @@
+export type RootStackParamList = {
+  Index: undefined;
+  Mortalidad: undefined;
+  Montas: undefined;
+  ProductosC: undefined;
+  Alimento: undefined;
+  Peso: undefined;
+  Engorda: undefined;
+  Registro1: undefined;
+  Registro2: undefined;
+  Almacen: undefined;
+};
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 
-import Index from './(tabs)/index';
 import Alimento from './Alimento';
+import Almacen from './Almacen';
 import Engorda from './Engorda';
+import Index from './index';
 import Montas from './Montas';
 import Mortalidad from './Mortalidad';
 import Peso from './Peso';
@@ -13,7 +27,7 @@ import ProductosC from './ProductosC';
 import Registro1 from './Registro1';
 import Registro2 from './Registro2';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();  // Tipado con generics
 
 export default function App() {
   return (
@@ -23,7 +37,7 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="Index"
           screenOptions={{
-            headerStyle: { backgroundColor: '#359d3eff' }, // color que quieres en la barra de navegación
+            headerStyle: { backgroundColor: '#359d3eff' },
             headerTintColor: 'black',
             cardStyle: { backgroundColor: '#34b14dff' },
           }}
@@ -37,6 +51,7 @@ export default function App() {
           <Stack.Screen name="Engorda" component={Engorda} options={{ title: 'Formulario Engorda' }} />
           <Stack.Screen name="Registro1" component={Registro1} options={{ title: 'Formulario Registro1' }} />
           <Stack.Screen name="Registro2" component={Registro2} options={{ title: 'Formulario Registro2' }} />
+          <Stack.Screen name="Almacen" component={Almacen} options={{ title: 'Formulario Almacen' }} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

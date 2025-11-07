@@ -1,257 +1,185 @@
 import React, { useState } from 'react';
 import { Alert, Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-export default function Registro2() {
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from './firebaseConfig';
+
+export default function TratamientoMedicamento() {
   const [form, setForm] = useState({
-    // Monta
-    fechaMonta: '',
-    identificacionMacho: '',
-    fechaPalpacion: '',
-    palpacion: '',
-    // Parto
-    fechaParto: '',
-    totalNacidos: '',
-    vivos: '',
-    muertos: '',
-    i: '',
-    r: '',
-    // Destete
-    fechaDestete: '',
-    numeroGazapos: '',
-    pesoCamada: '',
-    edadDias: '',
-    observacionesDestete: '',
+    fecha: new Date(),
+    noJaula: '',
+    areaProductiva: '',
+    motivoTratamiento: '',
+    nombreComercial: '',
+    principioActivo: '',
+    dosisAAplicar: '',
+    diasTratamiento: '',
+    tiempoRetiro: '',
+    nombreMedico: '',
   });
 
-  const handleChange = (name: string, value: string) => {
-    setForm(prevForm => ({
-      ...prevForm,
-      [name]: value,
-    }));
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+
+  const handleChange = (name: string, value: any) => {
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
   };
 
-  const confirmarDatos = () => {
-    Alert.alert(
-      'Datos ingresados',
-      `Monta\nFecha: ${form.fechaMonta}\nIdentificación macho: ${form.identificacionMacho}\nFecha palpación: ${form.fechaPalpacion}\nPalpación: ${form.palpacion}\n\n` +
-      `Parto\nFecha: ${form.fechaParto}\nTotal nacidos: ${form.totalNacidos}\nVivos: ${form.vivos}\nMuertos: ${form.muertos}\nI: ${form.i}\nR: ${form.r}\n\n` +
-      `Destete\nFecha: ${form.fechaDestete}\nNúmero de gazapos: ${form.numeroGazapos}\nPeso camada: ${form.pesoCamada}\nEdad días: ${form.edadDias}\nObservaciones: ${form.observacionesDestete}`,
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => Alert.alert('Datos confirmados') },
-      ]
-    );
+  const showDatePicker = () => setDatePickerVisible(true);
+
+  const hideDatePicker = () => setDatePickerVisible(false);
+
+  const handleConfirm = (date: Date) => {
+    handleChange('fecha', date);
+    hideDatePicker();
+  };
+
+  const confirmarDatos = async () => {
+    try {
+      await addDoc(collection(db, "TratamientoMedicamento"), {
+        fecha: form.fecha.toISOString(),
+        noJaula: form.noJaula,
+        areaProductiva: form.areaProductiva,
+        motivoTratamiento: form.motivoTratamiento,
+        nombreComercial: form.nombreComercial,
+        principioActivo: form.principioActivo,
+        dosisAAplicar: form.dosisAAplicar,
+        diasTratamiento: form.diasTratamiento,
+        tiempoRetiro: form.tiempoRetiro,
+        nombreMedico: form.nombreMedico,
+      });
+      Alert.alert('Éxito', 'Datos guardados correctamente.');
+      setForm({
+        fecha: new Date(),
+        noJaula: '',
+        areaProductiva: '',
+        motivoTratamiento: '',
+        nombreComercial: '',
+        principioActivo: '',
+        dosisAAplicar: '',
+        diasTratamiento: '',
+        tiempoRetiro: '',
+        nombreMedico: '',
+      });
+    } catch (error) {
+      Alert.alert('Error', 'No se pudieron guardar los datos.');
+      console.error(error);
+    }
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.title}>Formulario Reproducción</Text>
+      <Text style={styles.title}>Formulario Tratamientos</Text>
 
-      {/* Monta */}
-      <Text style={styles.sectionTitle}>Monta</Text>
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Fecha</Text>
-        <TextInput
-          value={form.fechaMonta}
-          onChangeText={v => handleChange('fechaMonta', v)}
-          placeholder="YYYY-MM-DD"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Identificación macho</Text>
-        <TextInput
-          value={form.identificacionMacho}
-          onChangeText={v => handleChange('identificacionMacho', v)}
-          placeholder="Identificación macho"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Fecha palpación</Text>
-        <TextInput
-          value={form.fechaPalpacion}
-          onChangeText={v => handleChange('fechaPalpacion', v)}
-          placeholder="YYYY-MM-DD"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Palpación</Text>
-        <TextInput
-          value={form.palpacion}
-          onChangeText={v => handleChange('palpacion', v)}
-          placeholder="Palpación"
-          style={styles.input}
-        />
+        <Button title={form.fecha.toLocaleDateString()} onPress={showDatePicker} color="#74ae6bff" />
+        <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} />
       </View>
 
-      {/* Parto */}
-      <Text style={styles.sectionTitle}>Parto</Text>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Fecha</Text>
-        <TextInput
-          value={form.fechaParto}
-          onChangeText={v => handleChange('fechaParto', v)}
-          placeholder="YYYY-MM-DD"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Total de nacidos</Text>
-        <TextInput
-          value={form.totalNacidos}
-          onChangeText={v => handleChange('totalNacidos', v)}
-          placeholder="Número total"
-          keyboardType="numeric"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Vivos</Text>
-        <TextInput
-          value={form.vivos}
-          onChangeText={v => handleChange('vivos', v)}
-          placeholder="Número de vivos"
-          keyboardType="numeric"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Muertos</Text>
-        <TextInput
-          value={form.muertos}
-          onChangeText={v => handleChange('muertos', v)}
-          placeholder="Número de muertos"
-          keyboardType="numeric"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>I</Text>
-        <TextInput
-          value={form.i}
-          onChangeText={v => handleChange('i', v)}
-          placeholder="I"
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>R</Text>
-        <TextInput
-          value={form.r}
-          onChangeText={v => handleChange('r', v)}
-          placeholder="R"
-          style={styles.input}
-        />
+        <Text style={styles.label}>No. Jaula</Text>
+        <TextInput style={styles.input} value={form.noJaula} onChangeText={text => handleChange('noJaula', text)} placeholder=" " />
       </View>
 
-      {/* Destete */}
-      <Text style={styles.sectionTitle}>Destete</Text>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Fecha</Text>
-        <TextInput
-          value={form.fechaDestete}
-          onChangeText={v => handleChange('fechaDestete', v)}
-          placeholder="YYYY-MM-DD"
-          style={styles.input}
-        />
+        <Text style={styles.label}>Área Productiva</Text>
+        <TextInput style={styles.input} value={form.areaProductiva} onChangeText={text => handleChange('areaProductiva', text)} placeholder=" " />
       </View>
+
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Número de gazapos</Text>
-        <TextInput
-          value={form.numeroGazapos}
-          onChangeText={v => handleChange('numeroGazapos', v)}
-          placeholder="Número de gazapos"
-          keyboardType="numeric"
-          style={styles.input}
-        />
+        <Text style={styles.label}>Motivo de Tratamiento</Text>
+        <TextInput style={styles.input} value={form.motivoTratamiento} onChangeText={text => handleChange('motivoTratamiento', text)} placeholder=" " />
       </View>
+
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Peso camada</Text>
-        <TextInput
-          value={form.pesoCamada}
-          onChangeText={v => handleChange('pesoCamada', v)}
-          placeholder="Peso de la camada"
-          keyboardType="numeric"
-          style={styles.input}
-        />
+        <Text style={styles.label}>Nombre Comercial</Text>
+        <TextInput style={styles.input} value={form.nombreComercial} onChangeText={text => handleChange('nombreComercial', text)} placeholder=" " />
       </View>
+
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Edad días</Text>
-        <TextInput
-          value={form.edadDias}
-          onChangeText={v => handleChange('edadDias', v)}
-          placeholder="Edad en días"
-          keyboardType="numeric"
-          style={styles.input}
-        />
+        <Text style={styles.label}>Principio Activo</Text>
+        <TextInput style={styles.input} value={form.principioActivo} onChangeText={text => handleChange('principioActivo', text)} placeholder=" " />
       </View>
+
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Observaciones</Text>
-        <TextInput
-          value={form.observacionesDestete}
-          onChangeText={v => handleChange('observacionesDestete', v)}
-          placeholder="Observaciones"
-          multiline
-          style={styles.input}
-        />
+        <Text style={styles.label}>Dosis a Aplicar</Text>
+        <TextInput style={styles.input} value={form.dosisAAplicar} onChangeText={text => handleChange('dosisAAplicar', text)} placeholder=" " />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Días de Tratamiento</Text>
+        <TextInput style={styles.input} value={form.diasTratamiento} onChangeText={text => handleChange('diasTratamiento', text)} placeholder=" " />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Tiempo de Retiro</Text>
+        <TextInput style={styles.input} value={form.tiempoRetiro} onChangeText={text => handleChange('tiempoRetiro', text)} placeholder=" " />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Nombre Médico que Aplicó Medicamento</Text>
+        <TextInput style={styles.input} value={form.nombreMedico} onChangeText={text => handleChange('nombreMedico', text)} placeholder=" " />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Verificar y confirmar" onPress={confirmarDatos} color="#4a90e2" />
+        <Button title="Guardar Datos" onPress={confirmarDatos} color="#84a97fff" />
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ebf3eaff',
-  },
-  contentContainer: {
-    paddingHorizontal: 18,
-    paddingVertical: 20,
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
+  contentContainer: { padding: 20 },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#3B5998',
-    textAlign: 'center',
+    fontSize: 24,
     marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
     fontWeight: 'bold',
-    color: '#2c3e50',
-    marginTop: 20,
-    marginBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#3B5998',
+    textAlign: 'center',
+    color: '#74ae6bff',
   },
-  inputGroup: {
-    marginBottom: 15,
-  },
-  label: {
-    color: '#3B5998',
-    marginBottom: 6,
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  inputGroup: { marginBottom: 15 },
+  label: { fontSize: 16, marginBottom: 5 },
   input: {
-    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#3e97bdff',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    fontSize: 15,
-    color: '#2c3e50',
-    minHeight: 40,
+    borderColor: '#84a97fff',
+    borderRadius: 4,
+    padding: 10,
+    fontSize: 16,
+  },
+  inputInline: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#84a97fff',
+    borderRadius: 4,
+    padding: 10,
+    fontSize: 16,
+    marginRight: 10,
+  },
+  dropdown: {
+    backgroundColor: '#fff',
+    borderColor: '#84a97fff',
+    marginBottom: 10,
+  },
+  dropdownContainer: {
+    borderColor: '#84a97fff',
+  },
+  addSignContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  addNewText: {
+    color: '#84a97fff',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    marginTop: 5,
   },
   buttonContainer: {
     marginTop: 30,
-    marginBottom: 30,
+  },
+  buttonSpacing: {
+    marginRight: 10,
   },
 });

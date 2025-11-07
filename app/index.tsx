@@ -1,9 +1,9 @@
-// src/screens/HomeScreen.tsx
+// app/index.tsx (or (tabs)/index.tsx if using Expo Router groups)
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './App'; // Or './App.tsx' if TypeScript requires the extension
 
 const bitacoras = [
   { title: 'Mortalidad y control de fauna.', screen: 'Mortalidad' },
@@ -12,12 +12,12 @@ const bitacoras = [
   { title: 'Salida de alimento.', screen: 'Alimento' },
   { title: 'Peso de canales.', screen: 'Peso' },
   { title: 'Destete y salida de engorda.', screen: 'Engorda' },
-  { title: 'Carpeta de registros No.1 Hembras y machos reproductores.', screen: 'Registro1' },
-  { title: 'Carpeta de registros No.2 Tratamientos y actas de necropsia.', screen: 'Registro2' },
+  { title: 'Carpeta No.1 Homologación de camadas.', screen: 'Registro1' },
+  { title: 'Carpeta No.2 Tratamientos.', screen: 'Registro2' },
   { title: 'Almacen - Cocina', screen: 'Almacen' },
 ];
 
-export default function HomeScreen() {
+export default function Index() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
@@ -28,7 +28,7 @@ export default function HomeScreen() {
 
       <View style={styles.staticHeader}>
         <Image
-          source={require('../(tabs)/img/arcun.png')}
+          source={require('./(tabs)/img/arcun.png')}  // Corrected path assuming image is in app/(tabs)/img/; test and adjust (e.g., '../img/arcun.png' if in root/img/)
           contentFit="contain"
           style={styles.headerImage}
         />
@@ -43,7 +43,7 @@ export default function HomeScreen() {
               pressed && styles.buttonPressed,
               index === bitacoras.length - 1 && styles.fullWidthButton,
             ]}
-            onPress={() => navigation.navigate(screen)}
+            onPress={() => navigation.navigate(screen as keyof RootStackParamList)}
           >
             <Text style={styles.buttonText}>{title}</Text>
           </Pressable>
@@ -52,7 +52,6 @@ export default function HomeScreen() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
